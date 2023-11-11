@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BikeVibe</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BikeVibe.styles.css" asp-append-version="true" />
+</head>
+<body class="index-background" style="background-image:url(/svg/magicpattern-blob.svg); background-repeat:no-repeat; background-position: center; ">
+    <partial name="_NavBarPartial" />
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="row pt-5">
+
+                <div class="col-lg-4 col-md-6 mx-auto d-table order-first order-lg-last order-md-first order-sm-first">
+
+                    <div class="d-table-cell text-dark align-middle text-center ">
+                        <h1 class="fs-huge" style="font-family:VintageGroovy; ">Bike Vibes</h1>
+                    </div>
+
+                </div>
+                <div class="col-lg-6 col-md-6 mx-auto order-Last order-lg-first order-md-last order-sm-last">
+                    <object class="img-fluid" data="~/svg/bicycle-shop-animate.svg" type="image/svg+xml"></object>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    @*<partial name="_FooterPartial" />*@
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
+

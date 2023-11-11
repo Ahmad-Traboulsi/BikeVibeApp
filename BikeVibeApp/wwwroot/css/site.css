@@ -1,0 +1,58 @@
+html {
+  font-size: 14px;
+  height:100%
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  height:100%;
+}
+
+.fs-huge {
+    font-family: VintageGroovy;
+    font-size: 7em;
+    text-shadow: -5px 0 #BBE13B, 0 5px #BBE13B, 5px 0 #BBE13B, 0 -5px #BBE13B;
+}
+
+@font-face{
+    font-family:VintageGroovy;
+    src:url(../VintageKing.ttf);
+}
+
+.navbar-brand {
+    font-family: VintageGroovy;
+    margin-bottom: -10px;
+    margin-left: 20px;
+    font-size: 2.5rem;
+    text-shadow: -1px 0 #BBE13B, 0 1px #BBE13B, 1px 0 #BBE13B, 0 -1px #BBE13B;
+}
+
+.bback {
+    background-color: #ffffff;
+    opacity: 1;
+    background: linear-gradient(135deg, #f0f0f53855 25%, transparent 25%) -40px 0/ 80px 80px, linear-gradient(225deg, #f0f0f538 25%, transparent 25%) -40px 0/ 80px 80px, linear-gradient(315deg, #f0f0f53855 25%, transparent 25%) 0px 0/ 80px 80px, linear-gradient(45deg, #f0f0f538 25%, #ffffff 25%) 0px 0/ 80px 80px;
+}
+
+.input-validation-error {
+ border: 2px solid red
+}
+
+.field-validation-error {
+    color: red;
+}
+
+
+form .form-group{
+    padding-top:10px;
+}
+

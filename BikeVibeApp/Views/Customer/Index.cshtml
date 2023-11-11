@@ -1,0 +1,30 @@
+﻿@model List<BikeVibeApp.Models.Customer>
+
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<h1>Customers</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Customer Name</th>
+            <th>Membership Type</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(Customer customer in Model)
+        {
+            <tr>
+                <td>@customer.Name</td>
+                <td>@customer.MembershipType.Name</td>
+                <td><a asp-action="Edit" asp-route-id="@customer.Id">Edit</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,78 @@
+﻿@model BikeVibeApp.ViewModels.BicycleFormViewModel
+
+
+<div>
+    <a asp-action="Index">Back</a>
+</div>
+
+
+@if (Model.Bicycle != null && Model.Bicycle.Id != 0)
+{
+    ViewData["Title"] = "Edit Bicycle";
+    <h4>Edit Bicycle</h4>
+}
+else
+{
+    ViewData["Title"] = "New Bicycle";
+    <h4>New Bicycle</h4>
+}
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Save">
+            <input asp-for="Bicycle.Id" />
+            <div class="form-group">
+                <label asp-for="Bicycle.Name" class="control-label"></label>
+                <input asp-for="Bicycle.Name" class="form-control" />
+                <span asp-validation-for="Bicycle.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bicycle.DailyRentalRate" class="control-label"></label>
+                <input asp-for="Bicycle.DailyRentalRate" class="form-control" />
+                <span asp-validation-for="Bicycle.DailyRentalRate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bicycle.Size" class="control-label"></label>
+                <select asp-for="Bicycle.Size" class="form-select">
+                    <option value="">Select a Value</option>
+                    <option value="12">12 inch </option>
+                    <option value="16">16 inch </option>
+                    <option value="20">20 inch </option>
+                    <option value="24">24 inch </option>
+                    <option value="26">26 inch </option>
+                    <option value="27.5">27.5 inch </option>
+                    <option value="29">29 inch </option>
+                </select>
+                <span asp-validation-for="Bicycle.Size" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bicycle.NumberInStock" class="control-label"></label>
+                <input asp-for="Bicycle.NumberInStock" class="form-control" />
+                <span asp-validation-for="Bicycle.NumberInStock" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bicycle.BicycleTypeId" class="control-label"></label>
+                <select asp-for="Bicycle.BicycleTypeId" class="form-select" asp-items="Model.BicycleTypes">
+                    <option value="">Select a Value</option>
+                </select>
+                <span asp-validation-for="Bicycle.BicycleTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bicycle.BrandId" class="control-label"></label>
+                <select asp-for="Bicycle.BrandId" class ="form-select" asp-items="Model.Brands">
+                    <option value="">Select a Value</option>
+                </select>
+                <span asp-validation-for="Bicycle.BrandId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}
