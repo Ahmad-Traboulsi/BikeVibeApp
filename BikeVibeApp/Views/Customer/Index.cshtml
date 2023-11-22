@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create" class="btn btn-primary">New</a>
 </p>
-<table class="table">
+<table id="customers" class="table">
     <thead>
         <tr>
             <th>Customer Name</th>
@@ -28,3 +28,15 @@
         }
     </tbody>
 </table>
+
+@* @section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#customers").DataTable({
+                ajax: {url: '/api/customers', dataSrc: ''},
+                columns: [{data:'name'}, {data:'membershipType.Name'}]
+            });
+
+        });
+    </script>
+} *@

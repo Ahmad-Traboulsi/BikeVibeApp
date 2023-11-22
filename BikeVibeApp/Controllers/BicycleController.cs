@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using BikeVibeApp.Data;
 using BikeVibeApp.Models;
 using BikeVibeApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BikeVibeApp.Controllers
 {
+    [Authorize]
     public class BicycleController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BikeVibeApp.Data;
 using BikeVibeApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BikeVibeApp.Controllers
 {
+    [Authorize]
     public class BrandController : Controller
     {
         private readonly ApplicationDbContext _context;

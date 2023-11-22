@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BikeVibeApp.Models
 {
+    [Min18YearsForSubscribers]
     public class Customer
     {
         [HiddenInput]
