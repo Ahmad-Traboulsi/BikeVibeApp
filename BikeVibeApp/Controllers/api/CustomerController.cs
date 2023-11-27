@@ -8,11 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using BikeVibeApp.Data;
 using BikeVibeApp.Models;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BikeVibeApp.Controllers.api
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Jaafar")]
     public class CustomersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -22,11 +24,13 @@ namespace BikeVibeApp.Controllers.api
             _context = context;
         }
 
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
         {
           if (_context.Customers == null)
           {
+                
               return NotFound();
           }
             return await _context.Customers.Include(c=>c.MembershipType).ToListAsync();
