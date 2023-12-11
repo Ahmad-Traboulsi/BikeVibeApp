@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BikeVibe</title>
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
-@*     <link rel="stylesheet" href="~/lib/datatables/css/datatables.bootstrap4.css"/> *@
+    <link rel="stylesheet" href="~/lib/datatables/css/datatables.bootstrap4.css" />   @**@
+    <link rel="stylesheet" href="~/lib/toastr.js/toastr.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/BikeVibe.styles.css" asp-append-version="true" />
-</head>
+ </head>
 <body>
     <partial name="_NavBarPartial" />
     <div class="container">
@@ -19,9 +19,10 @@
     <partial name="_FooterPartial" />
     <script src="~/lib/jquery/jquery.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.bundle.js"></script>
-@*     <script src="~/lib/datatables/js/jquery.datatables.js"></script>
-    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script> *@
-
+    <script src="~/lib/datatables/js/jquery.datatables.js"></script> @**@
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>  @**@
+    <script src="~/lib/bootbox.js/bootbox.js"></script>
+    <script src="~/lib/toastr.js/toastr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)

@@ -14,7 +14,7 @@ namespace BikeVibeApp.Controllers.api
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Jaafar")]
+    
     public class CustomersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
