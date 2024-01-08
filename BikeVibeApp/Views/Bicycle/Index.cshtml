@@ -10,7 +10,7 @@
 <p>
     <a asp-action="New" class="btn btn-primary">New</a>
 </p>
-<table class="table">
+<table id="bicycles"class="table">
     <thead>
         <tr>
             <th>
@@ -43,7 +43,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                    @item.Name
+                @item.Name
             </td>
             <td>
                 @item.DailyRentalRate
@@ -68,3 +68,11 @@
 }
     </tbody>
 </table>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#bicycles').DataTable();
+        });
+    </script>
+}

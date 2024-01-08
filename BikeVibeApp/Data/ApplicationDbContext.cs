@@ -11,11 +11,12 @@ namespace BikeVibeApp.Data
         public DbSet<Bicycle> Bicycles { get; set; }
         public DbSet<Brand> Brands { get; set; }    
         public DbSet<BicycleType> BicycleTypes { get; set; }
-      
-
+      public DbSet<Coupon> Coupons { get; set; }    
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
+
+        public DbSet<Rental> Rental { get; set; } = default!;
     }
 }

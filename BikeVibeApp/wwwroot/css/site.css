@@ -1,6 +1,7 @@
 html {
-  font-size: 14px;
-  height:100%
+    font-size: 14px;
+    
+    /*  height:100%*/
 }
 
 @media (min-width: 768px) {
@@ -15,13 +16,27 @@ html {
 }
 
 body {
-  height:100%;
+    height: 100%;
+    margin-bottom: 40px;
+   /* background-color: #edf2f9;*/
+}
+
+.font-groovy {
+    font-family: VintageGroovy;
 }
 
 .fs-huge {
-    font-family: VintageGroovy;
+    
     font-size: 7em;
+ 
+}
+
+.lime-shadow {
     text-shadow: -5px 0 #BBE13B, 0 5px #BBE13B, 5px 0 #BBE13B, 0 -5px #BBE13B;
+}
+
+.dark-lime-shadow {
+    text-shadow: -5px 0 #96b827, 0 5px #96b827, 5px 0 #96b827, 0 -5px #96b827;
 }
 
 @font-face{
@@ -30,8 +45,7 @@ body {
 }
 
 .navbar-brand {
-    font-family: VintageGroovy;
-    margin-bottom: -10px;
+      margin-bottom: -10px;
     margin-left: 20px;
     font-size: 2.5rem;
     text-shadow: -1px 0 #BBE13B, 0 1px #BBE13B, 1px 0 #BBE13B, 0 -1px #BBE13B;
@@ -56,3 +70,7 @@ form .form-group{
     padding-top:10px;
 }
 
+input[type="text"]:read-only, 
+input[type="date"]:read-only {
+    background-color: #f0f0f0;
+}

@@ -1,0 +1,238 @@
+﻿@model BikeVibeApp.ViewModels.RentalFormViewModel
+
+<div class="row">
+    <div class="col-4">
+        <form id="form" asp-action="Save" asp-controller="api/Rental" method="post">
+
+            <!--Customer Info-->
+            <div class="form-group">
+                <input id="customerid" asp-for="Rental.CustomerId" />
+                <label class="control-label">Customer</label>
+                <input id="customer" type="text" value="@Model.Rental.Customer.Name" class="form-control" readonly />
+            </div>
+
+            <!--Length to bike size method 1-->
+            <!--Method 2: Length to bike size: you can use javascript-->
+            <div class="form-group">
+                <label class="control-label">How tall is the customer?</label>
+                <select id="bikesize" class="form-select" required>
+                    <option value="">Length in cm</option>
+                    <option value="12">150 --> 155 </option>
+                    <option value="16">156 --> 160 </option>
+                    <option value="20">161 --> 170 </option>
+                    <option value="24">171 --> 175 </option>
+                    <option value="26">176 --> 180 </option>
+                    <option value="27.5">181 --> 190</option>
+                    <option value="29">Taller than 190</option>
+                </select>
+            </div>
+
+            <!--Bike Type-->
+            <div class="form-group">
+                <label class="control-label">Bicycle Type</label>
+                <select name="biketypes" id="biketype"
+                        asp-items="@(new SelectList(Model.BicycleTypes,nameof(BicycleType.Id),nameof(BicycleType.Name),Model.Rental.Bicycle == null? 0 : Model.Rental.Bicycle.BicycleTypeId))"
+                        class="form-select" required>
+                    <option value="">Select a Value</option>
+                </select>
+            </div>
+
+            <!--Available Bike Models-->
+            <div class="form-group">
+                <label asp-for="Rental.BicycleId" class="control-label">Bike Model</label>
+                <select asp-for="Rental.BicycleId" class="form-select" readonly required>
+                    <option value="">Choose a Type &amp; Size First</option>
+                </select>
+                
+            </div>
+
+            <!--Pricing-->
+            <div class="form-group">
+                <label>Pricing</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Days</span>
+                    <input id="dayscount" name="days" type="text" class="form-control" placeholder="Days" aria-label="Days" value="1">
+                    <span class="input-group-text">x</span>
+                    <input id="dailyrental" type="text" class="form-control" placeholder="Daily" aria-label="Daily" readonly>
+                    <span class="input-group-text"> = </span>
+                    <input id="originalprice" type="text" class="form-control" placeholder="Total" aria-label="Total" readonly>
+                    <span class="input-group-text">$</span>
+     
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">@Model.Rental.Customer.MembershipType.Name Price</span>
+                    <input id="membershipprice" type="text" class="form-control" placeholder="Membership Price" aria-label="Membership Price" readonly>
+                    <span class="input-group-text">$</span>
+                </div>
+            </div>
+
+            <!--Date-->
+            <div class="form-group">
+                <label>Date</label>
+
+                <input asp-for="Rental.RentalDate" class="form-control" readonly />
+            </div>
+
+            <!--Coupon-->
+            <div class="form-group">
+                <label>Coupon</label>
+                <div class="input-group mb-3">
+                    <input id="couponcode" class="form-control" placeholder="Coupon Code" data-val="false" aria-label="Coupon Code" >
+                    <button id="checkcode" class="btn btn-outline-success" type="button">Check</button>
+                    <input id="coupondiscount" name="couponCode" type="text" class="form-control" placeholder="Discount" aria-label="Discount" readonly>
+                    <span class="input-group-text">%</span>
+                </div>
+            </div>
+
+            <!--Final Price-->
+            <div class="form-group">
+                <label>Final Price</label>
+                <input id="finalprice" type="text" class="form-control" placeholder="Final Price" aria-label="Final Price" readonly>
+            </div>
+
+            
+            <input id="membershipDiscount" type="hidden" value="@Model.Rental.Customer.MembershipType.Discount">
+
+            <div class="form-group">
+                <input id="submitButton" type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+
+    <div class="col-6">
+        <h1 id="sizeBanner" class="fs-huge lime-shadow text-center"></h1>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            const selectElement = $('#Rental_BicycleId');
+
+            //check coupon code validity
+            $('#checkcode').on('click', function () {
+                fetch('/api/Coupon/' + $('#couponcode').val()).then(response => {
+                    if (!response.ok)
+                        throw new Error('Network response was not ok');
+                    return response.json();
+                }).then(data => {
+                    $('#coupondiscount').val(data.discount * 100)
+                    calcPrice();
+                    toastr.success('Coupon Valid');
+                }).catch(error => {
+                    toastr.error('Invalid Coupon');
+                });
+            });
+
+            //at each price related item change update the final price
+            $('#dayscount, #coupondiscount').on('change', function () {
+                calcPrice();
+            });
+            function calcPrice() {
+                var membershipDiscount = $('#membershipDiscount').val();
+                var originalPrice = $('#dayscount').val() * $('#dailyrental').val();
+                var membershipPrice = originalPrice * (1 - membershipDiscount / 100);
+                var finalprice = membershipPrice * ((100 - $('#coupondiscount').val()) / 100);
+
+                $('#originalprice').val(originalPrice);
+                $('#membershipprice').val(membershipPrice);
+                
+                $('#finalprice').val(finalprice);
+            }
+
+            //display large bike size
+            $('#bikesize').on('change', function () {
+                var size = '';
+                if ($(this).val()) {
+                    size = $(this).val() + '<BR/> inch';
+                    getAvailableBikes();
+                }
+
+
+                $('#sizeBanner').html(size);
+            });
+
+            //get available bikes
+            $('#biketype').on('change', function () {
+                clearAvailableBike();
+                getAvailableBikes();
+            })
+            function getAvailableBikes() {
+                const type = $('#biketype').val();
+                const size = $('#bikesize').val();
+
+                if (!type || !size)
+                    return;
+
+                fetch('/api/Bicycle?' + new URLSearchParams({ 'type': type, 'size': size }))
+                    .then(response => response.json())
+                    .then(data => {
+                        
+                        if (data.length === 0) 
+                            toastr.warning('No bikes available matching the criteria')
+                        else {
+                            // Iterate through the data and create options
+                            data.forEach(item => {
+                                const option = document.createElement('option');
+                                option.value = item.id; // Assuming the API response has an 'id' property
+                                option.text = item.brand.name + '-' + item.name; // Assuming the API response has a 'name' property
+
+                                selectElement.append($('<option>', {
+                                    value: item.id,
+                                    text: item.name,
+                                    'data-rate': item.dailyRentalRate
+                                }));
+                            });
+                        }
+                    });
+            }
+            function clearAvailableBike() {          
+                selectElement.empty();
+                selectElement.append('<option value="">Choose a Type &amp; Size First</option>');
+            }
+
+            //after selecting a model, calculate price again based on rate
+            $('#Rental_BicycleId').on('change', function () {
+                var selected = $(this).find('option:selected');
+                $('#dailyrental').val(selected.data('rate'));
+                calcPrice();
+            });
+
+
+            //submit data to endpoint
+            $('#form').on('submit', function (event) {
+                event.preventDefault()
+                $("#form").validate()
+
+                var payload = JSON.stringify({
+                    CustomerId: $('#customerid').val(),
+                    BicycleId: $('#Rental_BicycleId').val(),
+                    CouponCode: $('#couponcode').val(),
+                    RentalDays: $('#dayscount').val()
+                });
+
+               fetch('/api/Rental', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }, 
+                    body: payload
+                }).then(response => {
+                    console.log(response);
+                    if (!response.ok)
+                        throw new Error('Network response was not ok');
+                    return response;
+                }).then(data => {
+                    console.log('Hello');
+                    toastr.success('Rental Succeeded');
+                    window.location.replace('/Rental')
+                }).catch(error => {
+                    toastr.error('Error Occured');
+                });
+            });
+        });
+    </script>
+}

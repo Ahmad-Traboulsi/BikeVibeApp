@@ -14,7 +14,7 @@ namespace BikeVibeApp.Models
         public string Name { get; set; }
 
         [Range(5, 15)]
-        [Display(Name = "Rental Date (Daily)")]
+        [Display(Name = "Rental Rate (Daily)")]
         public double DailyRentalRate { get; set; }
 
         [RegularExpression("12|16|20|24|26|27.5|29")]

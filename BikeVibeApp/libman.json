@@ -29,6 +29,19 @@
     {
       "library": "toastr.js@2.1.4",
       "destination": "wwwroot/lib/toastr.js/"
+    },
+    {
+      "library": "typeahead.js@0.11.1",
+      "destination": "wwwroot/lib/typeahead.js/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "fontawesome-6-pro@6.4.0",
+      "destination": "wwwroot/fontawesome-6-pro/"
+    },
+    {
+      "library": "apexcharts@3.45.1",
+      "destination": "wwwroot/lib/apexcharts/"
     }
   ]
 }

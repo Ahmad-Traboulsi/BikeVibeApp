@@ -9,6 +9,7 @@ using BikeVibeApp.Data;
 using BikeVibeApp.Models;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
+using BikeVibeApp.ViewModels;
 
 namespace BikeVibeApp.Controllers.api
 {
@@ -33,7 +34,10 @@ namespace BikeVibeApp.Controllers.api
                 
               return NotFound();
           }
-            return await _context.Customers.Include(c=>c.MembershipType).ToListAsync();
+
+            IQueryable<Customer> customersQuery = _context.Customers.Include(c=> c.MembershipType);
+
+            return await customersQuery.ToListAsync();
         }
 
         [HttpGet("{id}")]
@@ -52,6 +56,8 @@ namespace BikeVibeApp.Controllers.api
 
             return customer;
         }
+
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCustomer(int id, Customer customer)

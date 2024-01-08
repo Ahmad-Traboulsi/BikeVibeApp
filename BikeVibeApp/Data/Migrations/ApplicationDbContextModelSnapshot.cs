@@ -98,6 +98,32 @@ namespace BikeVibeApp.Data.Migrations
                     b.ToTable("Brands");
                 });
 
+            modelBuilder.Entity("BikeVibeApp.Models.Coupon", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(2,1)");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Coupons");
+                });
+
             modelBuilder.Entity("BikeVibeApp.Models.Customer", b =>
                 {
                     b.Property<int>("Id")
@@ -148,6 +174,44 @@ namespace BikeVibeApp.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MembershipTypes");
+                });
+
+            modelBuilder.Entity("BikeVibeApp.Models.Rental", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("ActualReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("BicycleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ExpectedReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("RentalDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("isReturned")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("withCoupon")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BicycleId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Rental");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -380,6 +444,25 @@ namespace BikeVibeApp.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("MembershipType");
+                });
+
+            modelBuilder.Entity("BikeVibeApp.Models.Rental", b =>
+                {
+                    b.HasOne("BikeVibeApp.Models.Bicycle", "Bicycle")
+                        .WithMany()
+                        .HasForeignKey("BicycleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BikeVibeApp.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bicycle");
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -1,0 +1,177 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h1>Customers</h1>
+<partial name="~/Views/Customer/MiniDashboard.cshtml" />
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card shadow h-100">
+            <div class="card-header">Membership Distribution</div>
+            <div class="card-body">
+                <div class="card-text" id="chartCustomer"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card shadow h-100">
+            <div class="card-header">Age Groups</div>
+            <div class="card-body">
+                <div class="card-text" id="chartAgeGroups"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+
+<h1>Rentals</h1>
+<partial name="~/Views/Rental/MiniDashboard.cshtml" />
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card shadow h-100">
+            <div class="card-header">By Date</div>
+            <div class="card-body">
+                <div class="card-text" id="chartRental"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card shadow h-100">
+            <div class="card-header">Bike Demand</div>
+            <div class="card-body">
+                <div class="card-text" id="chartBikeDemand"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            PopCustomersMiniDash();
+            PopRentalsMiniDash();
+
+            fetch('/api/Dashboard/MembershipType')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // Prepare the data for ApexCharts
+                    var chartData = data.map(item => ({
+                        label: item.label,
+                        count: item.count
+                    }));
+
+                    // Create the chart
+                    var chartOptions = {
+                        series: chartData.map(item => item.count),
+                        labels: chartData.map(item => item.label),
+                        chart: {
+                            type: 'donut'
+                        }
+                    };
+
+                    var chart = new ApexCharts(document.querySelector("#chartCustomer"), chartOptions);
+                    chart.render();
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+
+            fetch('/api/Dashboard/RentalsFrequency')
+                .then(response => response.json())
+                .then(data => {
+                    // Extract date and count data from the response
+                    var dates = data.map(item => item.date);
+                    var counts = data.map(item => item.count);
+
+                    // Create the chart options
+                    var chartOptions = {
+                        colors: [ '#9C27B0'],
+                        series: [{
+                            name: 'Rentals',
+                            data: counts
+                        }],
+                        chart: {
+                            type: 'line',
+                            height: 350,
+                            zoom: {
+                                enabled: false
+                            }
+                        },
+                        xaxis: {
+                            categories: dates
+                        }
+                    };
+
+                    // Create the chart
+                    var chart = new ApexCharts(document.querySelector("#chartRental"), chartOptions);
+                    chart.render();
+                })
+                .catch(error => {
+                    console.error('Error fetching rental data:', error);
+                });
+
+            fetch('/api/Dashboard/BikeDemand')
+                .then(response => response.json())
+                .then(data => {
+                    // Extract item names and counts from the response
+                    var itemNames = data.map(item => item.name);
+                    var itemCounts = data.map(item => item.count);
+
+                    // Create the chart options
+                    var chartOptions = {
+                        colors: ['#F44336'],
+                        series: [{
+                            name: 'Count',
+                            data: itemCounts
+                        }],
+                        chart: {
+                            type: 'bar',
+                            height: 350,
+                        },
+                        xaxis: {
+                            categories: itemNames
+                        }
+                    };
+
+                    // Create the chart
+                    var chart = new ApexCharts(document.querySelector("#chartBikeDemand"), chartOptions);
+                    chart.render();
+                })
+                .catch(error => {
+                    console.error('Error fetching item data:', error);
+                });
+
+            // Fetch customer data using Fetch API
+            fetch('/api/Dashboard/AgeGroups')
+                .then(response => response.json())
+                .then(data => {
+                    // Extract age group labels and counts from the response
+                    var ageGroupLabels = data.map(item => item.ageGroup);
+                    var ageGroupCounts = data.map(item => item.count);
+                    // Create the chart options
+                    var chartOptions = {
+                        colors: ['#34ebbd'],
+                        series: [{ name: 'Count', data: ageGroupCounts }],
+                        chart: {
+                            type: 'bar',
+                            height: 350,
+                        },
+                        xaxis: {
+                            categories: ageGroupLabels
+                        }
+                    };
+
+                    // Create the chart
+                    var chart = new ApexCharts(document.querySelector("#chartAgeGroups"), chartOptions);
+                    chart.render();
+                })
+                .catch(error => {
+                    console.error('Error fetching customer data:', error);
+                });
+
+        });
+    </script>
+}

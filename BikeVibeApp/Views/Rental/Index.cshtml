@@ -1,0 +1,62 @@
+﻿@model IEnumerable<BikeVibeApp.Models.Rental>
+
+@{
+    ViewData["Title"] = "Rentals";
+}
+
+<h1>Rentals</h1>
+<partial name="~/Views/Rental/MiniDashboard.cshtml" />
+
+<div class="row">
+    <div class="col">
+<table id="rentals" class="table">
+    <thead>
+        <tr>
+            <th>
+                Customer Name
+            </th>
+            <th>
+                Bicycle
+            </th>
+            <th>
+                Rental Date
+            </th>
+            <th>
+                Expected Return Date
+            </th>
+            <th>Rental Days</th>
+            <th>Return</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.Customer.Name
+            </td>
+            <td>
+                @item.Bicycle.Name
+            </td>
+            <td>
+                @item.RentalDate.Value.ToShortDateString()
+            </td>
+            <td>
+                    @item.ExpectedReturnDate.Value.ToShortDateString()
+            </td>
+            <td>@item.RentalDays</td>
+            <td></td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () { 
+            $('#rentals').DataTable();
+        });
+        PopRentalsMiniDash();
+        
+    </script>
+}
